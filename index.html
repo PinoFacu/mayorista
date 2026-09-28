@@ -3,9 +3,19 @@
 @media(max-width:620px){.grid{grid-template-columns:1fr}.wrap{width:calc(100% - 22px)}h1{font-size:clamp(39px,13vw,58px)}.lead{font-size:18px}.notice{box-shadow:4px 4px 0 var(--c)}.body{padding:15px}.price{font-size:28px}.controls{min-height:48px}.qty button{width:44px;min-height:48px}.qty input{width:48px}.add{min-height:48px}.barin{width:calc(100% - 22px);gap:9px}.summary{min-width:0}.summary b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.summary small{display:none}.cta{min-height:48px;padding:13px 14px}.sheet{padding:20px 16px calc(20px + env(safe-area-inset-bottom));max-height:92dvh}.catalog{padding-bottom:110px}}
 @media(max-width:380px){.brand span{font-size:14px}.brand img{width:42px;height:42px}.tag{font-size:11px}.controls{gap:6px}.add{font-size:13px}.barin{gap:6px}.cta{font-size:12px;padding-inline:11px}}
 @media(hover:hover){.add:hover{background:var(--c)}}
-button,a{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}</style></head>
+button,a{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}
+.ig-follow{display:inline-flex;align-items:center;gap:9px;margin-top:12px;color:var(--k);font-size:15px;font-weight:800;text-decoration:none}
+.ig-follow .ig-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--c);color:#fff;font-size:15px}
+.ig-follow .ig-handle{color:var(--c);font-weight:950}
+.ig-follow:hover .ig-handle{text-decoration:underline}
+@media(max-width:620px){.ig-follow{font-size:14px;margin-top:10px}}
+</style></head>
 <body><header><div class="wrap brand"><img src="https://ugc.production.linktr.ee/CGWVNMRSiGrGj9mKFbsZ_u9J97SeDEvWXLd37?io=true&size=avatar-v3_0" alt="Pino Facu"><span>PINO FACU · REVENTA</span></div></header>
-<section class="hero"><div class="wrap"><span class="tag">PRECIOS ESPECIALES 🔥</span><h1>¿TENÉS MUEBLERÍA?<br><span>ATENDEME ESTO.</span></h1><p class="lead">Muebles de Pino Facu con precios para reventa. Elegí tus productos, armá el pedido y coordinamos todo por WhatsApp.</p><div class="notice"><b>📦 Compra mínima: 3 unidades por producto.</b><br>A partir de 3 unidades accedés al precio de reventa. Si necesitás más, sumás las que quieras y mantenés el mismo precio unitario.</div></div></section>
+<section class="hero"><div class="wrap"><span class="tag">PRECIOS ESPECIALES 🔥</span><h1>¿TENÉS MUEBLERÍA?<br><span>ATENDEME ESTO.</span></h1><p class="lead">Muebles de Pino Facu con precios para reventa. Elegí tus productos, armá el pedido y coordinamos todo por WhatsApp.</p>
+<a class="ig-follow" href="https://www.instagram.com/pinofaculp/" target="_blank" rel="noopener noreferrer" aria-label="Seguir a Pino Facu en Instagram">
+<span class="ig-icon" aria-hidden="true">◎</span><span>Seguinos en Instagram <span class="ig-handle">@pinofaculp →</span></span>
+</a>
+<div class="notice"><b>📦 Compra mínima: 3 unidades por producto.</b><br>A partir de 3 unidades accedés al precio de reventa. Si necesitás más, sumás las que quieras y mantenés el mismo precio unitario.</div></div></section>
 <main class="catalog"><div class="wrap"><h2>Elegí lo que querés llevar</h2><p>Precios por unidad · Pedido sujeto a disponibilidad.</p><div id="grid" class="grid"></div></div></main>
 <div class="bar"><div class="barin"><div class="summary"><b id="bt">Tu pedido está vacío</b><small id="bc">Elegí al menos 3 unidades de un producto.</small></div><button class="cta" id="review">VER PEDIDO →</button></div></div>
 <div class="overlay" id="ov"><div class="sheet"><div class="head"><div><div class="cat">TU PEDIDO</div><h2>Coordinemos por WhatsApp</h2></div><button class="close" id="close">×</button></div><div id="items"></div><div class="total"><span>Total de referencia</span><span id="tot">$0</span></div><p class="fine">Este pedido no confirma la compra ni reserva stock. Al continuar vas a WhatsApp para confirmar disponibilidad, condiciones y coordinar la operación.</p><a id="wa" class="cta full" target="_blank">COORDINAR PEDIDO POR WHATSAPP →</a></div></div>
