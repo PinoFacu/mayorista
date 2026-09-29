@@ -28,9 +28,9 @@ button,a{-webkit-tap-highlight-color:transparent}button{touch-action:manipulatio
 <a class="ig-follow" href="https://www.instagram.com/pinofaculp/" target="_blank" rel="noopener noreferrer" aria-label="Seguir a Pino Facu en Instagram">
 <span class="ig-icon" aria-hidden="true">◎</span><span>Seguinos en Instagram <span class="ig-handle">@pinofaculp →</span></span>
 </a>
-<div class="notice"><b>📦 Compra mínima: 3 unidades por producto.</b><br>A partir de 3 unidades accedés al precio de reventa. Si necesitás más, sumás las que quieras y mantenés el mismo precio unitario.</div></div></section>
+<div class="notice"><b>📦 Compra mínima según categoría.</b><br><b>Muebles de cocina:</b> desde 2 unidades por producto. <b>Camas, roperos y vestidores:</b> desde 3 unidades por producto. A partir del mínimo, podés sumar las unidades que necesites y mantenés el mismo precio unitario de reventa.</div></div></section>
 <main class="catalog"><div class="wrap"><h2>Elegí lo que querés llevar</h2><p>Precios por unidad · Pedido sujeto a disponibilidad.</p><div id="categories" class="categories"></div></div></main>
-<div class="bar"><div class="barin"><div class="summary"><b id="bt">Tu pedido está vacío</b><small id="bc">Elegí al menos 3 unidades de un producto.</small></div><button class="cta" id="review">VER PEDIDO →</button></div></div>
+<div class="bar"><div class="barin"><div class="summary"><b id="bt">Tu pedido está vacío</b><small id="bc">Elegí productos respetando el mínimo de cada categoría.</small></div><button class="cta" id="review">VER PEDIDO →</button></div></div>
 <div class="overlay" id="ov"><div class="sheet"><div class="head"><div><div class="cat">TU PEDIDO</div><h2>Coordinemos por WhatsApp</h2></div><button class="close" id="close">×</button></div><div id="items"></div><div class="total"><span>Total de referencia</span><span id="tot">$0</span></div><p class="fine">Este pedido no confirma la compra ni reserva stock. Al continuar vas a WhatsApp para confirmar disponibilidad, condiciones y coordinar la operación.</p><a id="wa" class="cta full" target="_blank">COORDINAR PEDIDO POR WHATSAPP →</a></div></div>
 <script>
 const APPS_SCRIPT_URL="";
@@ -38,7 +38,7 @@ const fallbackProducts=[
 {id:"r80",group:"ROPEROS",cat:"Roperos",name:"Ropero 80 cm",price:95000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/Ropero-de2puertas-depino-2.png"},
 {id:"r120",group:"ROPEROS",cat:"Roperos",name:"Ropero 1,20 m",price:114000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/RoperoDePino-3Puertas-2.png"},
 {id:"r160",group:"ROPEROS",cat:"Roperos",name:"Ropero 1,60 m",price:154000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/RoperoDePino-4Puertas-1.png"},
-{id:"v120",group:"VESTIDORES",cat:"Vestidores",name:"Vestidor 1,20 m",price:115000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/Vestidor-Depino-conbarral-de120-2.png"},
+{id:"v120",group:"VESTIDORES",cat:"Vestidores",name:"Vestidor 1,20 m",price:115000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/Vestidor-de-pino-XLde%20120-2.png"},
 {id:"m80",group:"MUEBLES DE COCINA",cat:"Modulares",name:"Modular 80 cm",price:91000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/Modular-de80-depino.png"},
 {id:"m120",group:"MUEBLES DE COCINA",cat:"Modulares",name:"Modular 1,20 m",price:119000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/Modular-de120-depino.png"},
 {id:"b120",group:"MUEBLES DE COCINA",cat:"Bajo + alacena",name:"Combo 1,20 m",price:129000,img:"https://raw.githubusercontent.com/PinoFacu/mayorista/refs/heads/main/BajoConAlacenayMesada.png"},
@@ -49,7 +49,8 @@ let products=[],order={}; const money=n=>new Intl.NumberFormat("es-AR",{style:"c
 async function load(){try{if(!APPS_SCRIPT_URL)throw 0;let r=await fetch(APPS_SCRIPT_URL,{cache:"no-store"}),d=await r.json();products=d.filter(x=>String(x.activo).toLowerCase()!=="false").map(x=>{let name=x.name||x.producto,cat=x.cat||x.categoria||"",group=x.group||x.grupo||inferGroup(name,cat);return {...x,price:Number(x.price||x.precio),name,img:x.img||x.imagen,cat,group}})}catch(e){products=fallbackProducts}render()}
 const CATEGORY_ORDER=["CAMAS","MUEBLES DE COCINA","ROPEROS","VESTIDORES"];
 function inferGroup(name="",cat=""){let t=(name+" "+cat).toLowerCase();if(t.includes("cucheta")||t.includes("cama"))return "CAMAS";if(t.includes("ropero"))return "ROPEROS";if(t.includes("vestidor"))return "VESTIDORES";return "MUEBLES DE COCINA"}
-function productCard(p,i){return `<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}" loading="lazy"></div><div class="body"><div class="cat">${p.cat}</div><div class="name">${p.name}</div><div class="price">${money(p.price)} <small>c/u</small></div><div class="rule">Precio reventa · mínimo 3 unidades</div><div class="controls"><div class="qty"><button onclick="step(${i},-1)" aria-label="Restar unidad">−</button><input id="q${i}" value="3" inputmode="numeric" aria-label="Cantidad de ${p.name}"><button onclick="step(${i},1)" aria-label="Sumar unidad">+</button></div><button class="add" onclick="add(${i})">AGREGAR</button></div></div></article>`}
+function minQty(p){return (p.group||inferGroup(p.name,p.cat))==="MUEBLES DE COCINA"?2:3}
+function productCard(p,i){let min=minQty(p);return `<article class="card"><div class="pic"><img src="${p.img}" alt="${p.name}" loading="lazy"></div><div class="body"><div class="cat">${p.cat}</div><div class="name">${p.name}</div><div class="price">${money(p.price)} <small>c/u</small></div><div class="rule">Precio reventa · mínimo ${min} unidades</div><div class="controls"><div class="qty"><button onclick="step(${i},-1)" aria-label="Restar unidad">−</button><input id="q${i}" value="${min}" inputmode="numeric" aria-label="Cantidad de ${p.name}"><button onclick="step(${i},1)" aria-label="Sumar unidad">+</button></div><button class="add" onclick="add(${i})">AGREGAR</button></div></div></article>`}
 function render(){
  categories.innerHTML=CATEGORY_ORDER.map(group=>{
    const list=products.map((p,i)=>({p,i})).filter(x=>(x.p.group||inferGroup(x.p.name,x.p.cat))===group);
@@ -68,9 +69,9 @@ function toggleCategory(id,button){
  const section=document.getElementById(id),open=section.classList.toggle("open");
  button.setAttribute("aria-expanded",open?"true":"false");
 }
-function step(i,d){let e=document.getElementById("q"+i);e.value=Math.max(3,(parseInt(e.value)||3)+d)}
-function add(i){let q=Math.max(3,parseInt(document.getElementById("q"+i).value)||3),p=products[i];order[p.id||i]={p,q};bar()}
-function bar(){let a=Object.values(order),u=a.reduce((s,x)=>s+x.q,0),t=a.reduce((s,x)=>s+x.q*x.p.price,0);bt.textContent=a.length?money(t):"Tu pedido está vacío";bc.textContent=a.length?u+" unidades · "+a.length+" productos":"Elegí al menos 3 unidades de un producto."}
+function step(i,d){let e=document.getElementById("q"+i),min=minQty(products[i]);e.value=Math.max(min,(parseInt(e.value)||min)+d)}
+function add(i){let p=products[i],min=minQty(p),q=Math.max(min,parseInt(document.getElementById("q"+i).value)||min);document.getElementById("q"+i).value=q;order[p.id||i]={p,q};bar()}
+function bar(){let a=Object.values(order),u=a.reduce((s,x)=>s+x.q,0),t=a.reduce((s,x)=>s+x.q*x.p.price,0);bt.textContent=a.length?money(t):"Tu pedido está vacío";bc.textContent=a.length?u+" unidades · "+a.length+" productos":"Elegí productos respetando el mínimo de cada categoría."}
 function removeItem(id){delete order[id];bar();openOrder()}
 function openOrder(){let a=Object.values(order);items.innerHTML=a.length?a.map(x=>`<div class="item"><div><b>${x.q} × ${x.p.name}</b><br><small>${money(x.p.price)} c/u</small><br><button class="remove" onclick="removeItem(\'${x.p.id}\')">Eliminar</button></div><b>${money(x.q*x.p.price)}</b></div>`).join(""):"<p>Todavía no agregaste productos.</p>";let t=a.reduce((s,x)=>s+x.q*x.p.price,0);tot.textContent=money(t);if(a.length){let lines=a.map(x=>`• ${x.q} x ${x.p.name} — ${money(x.q*x.p.price)}`).join("\n"),msg=`Hola! Quiero consultar por un pedido para reventa:\n\n${lines}\n\nTotal de referencia: ${money(t)}\n\nQuiero coordinar el pedido y disponibilidad.`;wa.href="https://wa.me/542216013657?text="+encodeURIComponent(msg);wa.style.display="block"}else wa.style.display="none";ov.classList.add("on")}
 review.onclick=openOrder;close.onclick=()=>ov.classList.remove("on");ov.onclick=e=>{if(e.target===ov)ov.classList.remove("on")};load();
